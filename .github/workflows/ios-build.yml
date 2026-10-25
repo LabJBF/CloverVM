@@ -1,3 +1,4 @@
+
 name: CloverVM iOS Build
 
 on:
@@ -12,38 +13,43 @@ permissions:
 
 jobs:
   build:
-    name: Build iOS App
+    name: Build CloverVM
     runs-on: macos-15
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Select Xcode
+      - name: Check disk space and Xcode
         run: |
-          xcode-select -p
+          df -h "$RUNNER_TEMP"
           xcodebuild -version
+          xcodebuild -list -project CloverVM.xcodeproj
 
-      - name: Show project files
+      - name: Prepare clean build directory
         run: |
-          find . -maxdepth 3 \
-            \( -name "*.xcodeproj" \
-            -o -name "*.xcworkspace" \
-            -o -name "Package.swift" \) \
-            -print
+          rm -rf "$RUNNER_TEMP/CloverVM-DerivedData"
+          mkdir -p "$RUNNER_TEMP/CloverVM-DerivedData"
+          touch "$RUNNER_TEMP/CloverVM-DerivedData/test.tmp"
+          rm "$RUNNER_TEMP/CloverVM-DerivedData/test.tmp"
 
-      - name: Build CloverVM for iPad Simulator
+      - name: Build for iOS Simulator
+        shell: bash
         run: |
           set -o pipefail
+
           xcodebuild \
             -project CloverVM.xcodeproj \
             -scheme CloverVM \
             -sdk iphonesimulator \
             -configuration Debug \
             -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$RUNNER_TEMP/CloverVM-Build" \
+            -derivedDataPath "$RUNNER_TEMP/CloverVM-DerivedData" \
+            -jobs 2 \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=YES \
             CODE_SIGNING_ALLOWED=NO \
-            build | tee "$RUNNER_TEMP/build.log"
+            build 2>&1 | tee "$RUNNER_TEMP/build.log"
 
       - name: Upload build log
         if: always()
