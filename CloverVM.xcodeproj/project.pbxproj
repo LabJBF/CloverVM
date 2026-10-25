@@ -1,4 +1,3 @@
-
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
@@ -26,12 +25,16 @@
 		B10000000000000000000006 /* CreateVMView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateVMView.swift; sourceTree = "<group>"; };
 		B10000000000000000000007 /* MachineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachineDetailView.swift; sourceTree = "<group>"; };
 		B10000000000000000000008 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		B10000000000000000000009 /* Products */ = {isa = PBXGroup; name = Products; sourceTree = "<group>"; };
 		B10000000000000000000010 /* CloverVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloverVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C10000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -39,34 +42,81 @@
 			isa = PBXGroup;
 			children = (
 				D10000000000000000000002 /* CloverVM */,
-				B10000000000000000000009 /* Products */,
+				D10000000000000000000008 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
+
 		D10000000000000000000002 /* CloverVM */ = {
 			isa = PBXGroup;
 			path = CloverVM;
 			sourceTree = "<group>";
 			children = (
-				D10000000000000000000003 /* App Group */,
-				D10000000000000000000004 /* Models Group */,
-				D10000000000000000000005 /* Engine Group */,
-				D10000000000000000000006 /* Theme Group */,
-				D10000000000000000000007 /* Views Group */,
+				D10000000000000000000003 /* App */,
+				D10000000000000000000004 /* Models */,
+				D10000000000000000000005 /* Engine */,
+				D10000000000000000000006 /* Theme */,
+				D10000000000000000000007 /* Views */,
 			);
 		};
-		D10000000000000000000003 /* App Group */ = {isa = PBXGroup; name = App; children = (B10000000000000000000001 /* CloverVMApp.swift */,); sourceTree = "<group>"; };
-		D10000000000000000000004 /* Models Group */ = {isa = PBXGroup; name = Models; children = (B10000000000000000000002 /* VirtualMachine.swift */,); sourceTree = "<group>"; };
-		D10000000000000000000005 /* Engine Group */ = {isa = PBXGroup; name = Engine; children = (B10000000000000000000003 /* VirtualMachineBackend.swift */,); sourceTree = "<group>"; };
-		D10000000000000000000006 /* Theme Group */ = {isa = PBXGroup; name = Theme; children = (B10000000000000000000004 /* CloverTheme.swift */,); sourceTree = "<group>"; };
-		D10000000000000000000007 /* Views Group */ = {isa = PBXGroup; name = Views; children = (B10000000000000000000005 /* ContentView.swift */, B10000000000000000000006 /* CreateVMView.swift */, B10000000000000000000007 /* MachineDetailView.swift */, B10000000000000000000008 /* SettingsView.swift */); sourceTree = "<group>"; };
+
+		D10000000000000000000003 /* App */ = {
+			isa = PBXGroup;
+			children = (B10000000000000000000001 /* CloverVMApp.swift */,);
+			path = App;
+			sourceTree = "<group>";
+		};
+
+		D10000000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (B10000000000000000000002 /* VirtualMachine.swift */,);
+			path = Models;
+			sourceTree = "<group>";
+		};
+
+		D10000000000000000000005 /* Engine */ = {
+			isa = PBXGroup;
+			children = (B10000000000000000000003 /* VirtualMachineBackend.swift */,);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+
+		D10000000000000000000006 /* Theme */ = {
+			isa = PBXGroup;
+			children = (B10000000000000000000004 /* CloverTheme.swift */,);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+
+		D10000000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000005 /* ContentView.swift */,
+				B10000000000000000000006 /* CreateVMView.swift */,
+				B10000000000000000000007 /* MachineDetailView.swift */,
+				B10000000000000000000008 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+
+		D10000000000000000000008 /* Products */ = {
+			isa = PBXGroup;
+			children = (B10000000000000000000010 /* CloverVM.app */,);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		E10000000000000000000001 /* CloverVM */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F10000000000000000000001 /* Build configuration list for PBXNativeTarget "CloverVM" */;
-			buildPhases = (C10000000000000000000002 /* Sources */, C10000000000000000000001 /* Frameworks */, C10000000000000000000003 /* Resources */,);
+			buildPhases = (
+				C10000000000000000000002 /* Sources */,
+				C10000000000000000000001 /* Frameworks */,
+				C10000000000000000000003 /* Resources */,
+			);
 			buildRules = ();
 			dependencies = ();
 			name = CloverVM;
@@ -82,7 +132,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = { E10000000000000000000001 = {CreatedOnToolsVersion = 16.0;}; };
+				TargetAttributes = {
+					E10000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
 			};
 			buildConfigurationList = F10000000000000000000002 /* Build configuration list for PBXProject "CloverVM" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -90,7 +144,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (en, Base,);
 			mainGroup = D10000000000000000000001;
-			productRefGroup = B10000000000000000000009 /* Products */;
+			productRefGroup = D10000000000000000000008 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (E10000000000000000000001 /* CloverVM */,);
@@ -116,19 +170,106 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C10000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C10000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F10000000000000000000003 /* Debug project */ = {isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Debug; };
-		F10000000000000000000004 /* Release project */ = {isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Release; };
-		F10000000000000000000005 /* Debug target */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = CloverVM; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UILaunchScreen_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = com.macclover.clovervm; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTS_MACCATALYST = NO; }; name = Debug; };
-		F10000000000000000000006 /* Release target */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = CloverVM; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UILaunchScreen_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = com.macclover.clovervm; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTS_MACCATALYST = NO; }; name = Release; };
+		F10000000000000000000003 /* Debug project */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+
+		F10000000000000000000004 /* Release project */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+
+		F10000000000000000000005 /* Debug target */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CloverVM;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.macclover.clovervm;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+
+		F10000000000000000000006 /* Release target */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CloverVM;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.macclover.clovervm;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F10000000000000000000001 /* Build configuration list for PBXNativeTarget "CloverVM" */ = {isa = XCConfigurationList; buildConfigurations = (F10000000000000000000005 /* Debug target */, F10000000000000000000006 /* Release target */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		F10000000000000000000002 /* Build configuration list for PBXProject "CloverVM" */ = {isa = XCConfigurationList; buildConfigurations = (F10000000000000000000003 /* Debug project */, F10000000000000000000004 /* Release project */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		F10000000000000000000001 /* Build configuration list for PBXNativeTarget "CloverVM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000005 /* Debug target */,
+				F10000000000000000000006 /* Release target */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+
+		F10000000000000000000002 /* Build configuration list for PBXProject "CloverVM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000003 /* Debug project */,
+				F10000000000000000000004 /* Release project */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 	};
