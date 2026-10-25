@@ -1,0 +1,99 @@
+name: CloverVM iOS Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build CloverVM and export IPA
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Xcode and scheme
+        run: |
+          xcodebuild -version
+          xcodebuild -list -project CloverVM.xcodeproj
+
+      - name: Build for iOS Simulator
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CloverVM.xcodeproj \
+            -scheme CloverVM \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/CloverVM-Simulator" \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee "$RUNNER_TEMP/simulator-build.log"
+
+      - name: Build for physical iOS device
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CloverVM.xcodeproj \
+            -scheme CloverVM \
+            -sdk iphoneos \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/CloverVM-Device" \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee "$RUNNER_TEMP/device-build.log"
+
+      - name: Package unsigned IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          APP_PATH="$RUNNER_TEMP/CloverVM-Device/Build/Products/Release-iphoneos/CloverVM.app"
+          IPA_DIR="$RUNNER_TEMP/ipa-output"
+          PAYLOAD_DIR="$IPA_DIR/Payload"
+
+          if [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: CloverVM.app was not found at $APP_PATH"
+            echo "Checking available build products:"
+            find "$RUNNER_TEMP/CloverVM-Device/Build/Products" -maxdepth 4 -print || true
+            exit 1
+          fi
+
+          rm -rf "$IPA_DIR"
+          mkdir -p "$PAYLOAD_DIR"
+          ditto "$APP_PATH" "$PAYLOAD_DIR/CloverVM.app"
+          (
+            cd "$IPA_DIR"
+            /usr/bin/zip -qry "$RUNNER_TEMP/CloverVM-unsigned.ipa" Payload
+          )
+
+          echo "Unsigned IPA created:"
+          ls -lh "$RUNNER_TEMP/CloverVM-unsigned.ipa"
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloverVM-unsigned-IPA
+          path: ${{ runner.temp }}/CloverVM-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloverVM-build-logs
+          path: |
+            ${{ runner.temp }}/simulator-build.log
+            ${{ runner.temp }}/device-build.log
+          if-no-files-found: ignore
+          retention-days: 7
