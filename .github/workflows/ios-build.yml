@@ -1,0 +1,56 @@
+
+name: CloverVM iOS Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build iOS App
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Show project files
+        run: |
+          find . -maxdepth 3 \
+            \( -name "*.xcodeproj" \
+            -o -name "*.xcworkspace" \
+            -o -name "Package.swift" \) \
+            -print
+
+      - name: Build CloverVM for iPad Simulator
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project CloverVM.xcodeproj \
+            -scheme CloverVM \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/CloverVM-Build" \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tee "$RUNNER_TEMP/build.log"
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CloverVM-build-log
+          path: ${{ runner.temp }}/build.log
+          if-no-files-found: ignore
+          retention-days: 7
