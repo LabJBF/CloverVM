@@ -1,48 +1,52 @@
+
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \VirtualMachine.createdAt, order: .reverse) private var machines: [VirtualMachine]
+    @Query(sort: \VirtualMachine.createdAt, order: .reverse)
+    private var machines: [VirtualMachine]
+
     @State private var showingCreateVM = false
     @State private var selectedTab = 0
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            NavigationStack {
-                dashboard
-                    .navigationTitle("CloverVM")
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button {
-                                showingCreateVM = true
-                            } label: {
-                                Image(systemName: "plus")
-                                    .fontWeight(.semibold)
+            Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
+                NavigationStack {
+                    dashboard
+                        .navigationTitle("CloverVM")
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    showingCreateVM = true
+                                } label: {
+                                    Image(systemName: "plus")
+                                        .fontWeight(.semibold)
+                                }
+                                .tint(CloverTheme.accent)
+                                .accessibilityLabel("Create virtual machine")
                             }
-                            .tint(CloverTheme.accent)
-                            .accessibilityLabel("Create virtual machine")
                         }
-                    }
+                }
             }
-            .tabItem { Label("Home", systemImage: "square.grid.2x2.fill") }
-            .tag(0)
 
-            NavigationStack {
-                MachineListView()
-                    .navigationTitle("Virtual Machines")
+            Tab("Machines", systemImage: "desktopcomputer", value: 1) {
+                NavigationStack {
+                    MachineListView()
+                        .navigationTitle("Virtual Machines")
+                }
             }
-            .tabItem { Label("Machines", systemImage: "desktopcomputer") }
-            .tag(1)
 
-            NavigationStack {
-                SettingsView()
-                    .navigationTitle("Settings")
+            Tab("Settings", systemImage: "gearshape.fill", value: 2) {
+                NavigationStack {
+                    SettingsView()
+                        .navigationTitle("Settings")
+                }
             }
-            .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-            .tag(2)
         }
         .tint(CloverTheme.accent)
+        .toolbarBackground(.visible, for: .tabBar)
         .sheet(isPresented: $showingCreateVM) {
             CreateVMView()
         }
@@ -54,17 +58,36 @@ struct ContentView: View {
                 heroCard
 
                 HStack(spacing: 12) {
-                    StatCard(title: "Machines", value: "\(machines.count)", symbol: "desktopcomputer")
-                    StatCard(title: "Storage", value: "\(machines.reduce(0) { $0 + $1.diskGB }) GB", symbol: "internaldrive")
+                    StatCard(
+                        title: "Machines",
+                        value: "\(machines.count)",
+                        symbol: "desktopcomputer"
+                    )
+
+                    StatCard(
+                        title: "Storage",
+                        value: "\(machines.reduce(0) { $0 + $1.diskGB }) GB",
+                        symbol: "internaldrive"
+                    )
                 }
 
                 HStack {
                     Text("Your Machines")
                         .font(.title3.bold())
+
                     Spacer()
-                    Button("See All") { selectedTab = 1 }
+
+                    Button {
+                        selectedTab = 1
+                    } label: {
+                        HStack(spacing: 5) {
+                            Text("See All")
+                            Image(systemName: "arrow.right")
+                        }
                         .font(.subheadline.weight(.semibold))
-                        .tint(CloverTheme.accent)
+                    }
+                    .buttonStyle(.glass)
+                    .tint(CloverTheme.accent)
                 }
 
                 if machines.isEmpty {
@@ -82,10 +105,13 @@ struct ContentView: View {
                     }
                 }
 
-                Label("Emulation engine not installed", systemImage: "info.circle.fill")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 2)
+                Label(
+                    "Emulation engine not installed",
+                    systemImage: "info.circle.fill"
+                )
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .padding(.top, 2)
             }
             .padding()
         }
@@ -99,8 +125,13 @@ struct ContentView: View {
                     .font(.title2)
                     .foregroundStyle(.white)
                     .frame(width: 48, height: 48)
-                    .background(.white.opacity(0.18), in: RoundedRectangle(cornerRadius: 15))
+                    .background(
+                        .white.opacity(0.18),
+                        in: RoundedRectangle(cornerRadius: 15)
+                    )
+
                 Spacer()
+
                 Text("PREVIEW")
                     .font(.caption2.bold())
                     .tracking(1.2)
@@ -113,6 +144,7 @@ struct ContentView: View {
                 Text("Your systems.\nOne place.")
                     .font(.system(size: 30, weight: .bold, design: .rounded))
                     .fixedSize(horizontal: false, vertical: true)
+
                 Text("Create and organize virtual machine configurations on your iPad.")
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.82))
@@ -133,7 +165,10 @@ struct ContentView: View {
         .foregroundStyle(.white)
         .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(CloverTheme.gradient, in: RoundedRectangle(cornerRadius: 26))
+        .background(
+            CloverTheme.gradient,
+            in: RoundedRectangle(cornerRadius: 26)
+        )
     }
 }
 
@@ -147,17 +182,22 @@ private struct StatCard: View {
             Image(systemName: symbol)
                 .font(.headline)
                 .foregroundStyle(CloverTheme.accent)
+
             Text(value)
                 .font(.title2.bold())
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
+
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(CloverTheme.card, in: RoundedRectangle(cornerRadius: 20))
+        .background(
+            CloverTheme.card,
+            in: RoundedRectangle(cornerRadius: 20)
+        )
     }
 }
 
@@ -170,25 +210,34 @@ struct EmptyMachinesCard: View {
                 .font(.system(size: 34))
                 .foregroundStyle(CloverTheme.accent)
                 .padding(.bottom, 4)
+
             Text("Nothing here yet")
                 .font(.headline)
+
             Text("Create your first machine to start building your library.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+
             Button(action: action) {
                 Text("Create Machine")
                     .font(.subheadline.bold())
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
-                    .background(CloverTheme.gradient, in: Capsule())
+                    .background(
+                        CloverTheme.gradient,
+                        in: Capsule()
+                    )
                     .foregroundStyle(.white)
             }
             .buttonStyle(.plain)
         }
         .frame(maxWidth: .infinity)
         .padding(24)
-        .background(CloverTheme.card, in: RoundedRectangle(cornerRadius: 22))
+        .background(
+            CloverTheme.card,
+            in: RoundedRectangle(cornerRadius: 22)
+        )
     }
 }
 
@@ -201,31 +250,45 @@ struct MachineRow: View {
                 .font(.title2)
                 .foregroundStyle(CloverTheme.accent)
                 .frame(width: 52, height: 52)
-                .background(CloverTheme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 16))
+                .background(
+                    CloverTheme.accent.opacity(0.12),
+                    in: RoundedRectangle(cornerRadius: 16)
+                )
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(machine.name)
                     .font(.headline)
                     .foregroundStyle(.primary)
+
                 Text("\(machine.operatingSystem.rawValue) · \(machine.architecture.rawValue)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+
                 Text("\(machine.memoryGB) GB RAM · \(machine.diskGB) GB disk")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
+
             Spacer()
+
             Image(systemName: "chevron.right")
                 .font(.caption.bold())
                 .foregroundStyle(.tertiary)
         }
         .padding(14)
-        .background(CloverTheme.card, in: RoundedRectangle(cornerRadius: 20))
+        .background(
+            CloverTheme.card,
+            in: RoundedRectangle(cornerRadius: 20)
+        )
     }
 }
 
 struct MachineListView: View {
-    @Query(sort: \VirtualMachine.createdAt, order: .reverse) private var machines: [VirtualMachine]
+    @Environment(\.modelContext) private var modelContext
+
+    @Query(sort: \VirtualMachine.createdAt, order: .reverse)
+    private var machines: [VirtualMachine]
+
     @State private var showingCreateVM = false
 
     var body: some View {
@@ -236,9 +299,11 @@ struct MachineListView: View {
                 } description: {
                     Text("Your virtual machine configurations will appear here.")
                 } actions: {
-                    Button("Create Machine") { showingCreateVM = true }
-                        .buttonStyle(.borderedProminent)
-                        .tint(CloverTheme.accent)
+                    Button("Create Machine") {
+                        showingCreateVM = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(CloverTheme.accent)
                 }
             } else {
                 List {
@@ -254,14 +319,20 @@ struct MachineListView: View {
                     .onDelete(perform: deleteMachines)
                 }
                 .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .background(CloverTheme.background)
             }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button { showingCreateVM = true } label: {
+                Button {
+                    showingCreateVM = true
+                } label: {
                     Image(systemName: "plus")
                 }
+                .buttonStyle(.glass)
                 .tint(CloverTheme.accent)
+                .accessibilityLabel("Create virtual machine")
             }
         }
         .sheet(isPresented: $showingCreateVM) {
@@ -271,9 +342,13 @@ struct MachineListView: View {
 
     private func deleteMachines(at offsets: IndexSet) {
         for index in offsets {
-            // The list query is sorted the same way as this displayed collection.
-            // Deletion is handled by the detail view or SwiftData context in a later refinement.
-            _ = index
+            modelContext.delete(machines[index])
+        }
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to delete virtual machines: \(error)")
         }
     }
 }
