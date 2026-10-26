@@ -3,7 +3,6 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query(sort: \VirtualMachine.createdAt, order: .reverse)
     private var machines: [VirtualMachine]
 
@@ -12,41 +11,46 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
-                NavigationStack {
-                    dashboard
-                        .navigationTitle("CloverVM")
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                Button {
-                                    showingCreateVM = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                        .fontWeight(.semibold)
-                                }
-                                .tint(CloverTheme.accent)
-                                .accessibilityLabel("Create virtual machine")
+            NavigationStack {
+                dashboard
+                    .navigationTitle("CloverVM")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                showingCreateVM = true
+                            } label: {
+                                Image(systemName: "plus")
+                                    .fontWeight(.semibold)
                             }
+                            .tint(CloverTheme.accent)
+                            .accessibilityLabel("Create virtual machine")
                         }
-                }
+                    }
             }
+            .tabItem {
+                Label("Home", systemImage: "square.grid.2x2.fill")
+            }
+            .tag(0)
 
-            Tab("Machines", systemImage: "desktopcomputer", value: 1) {
-                NavigationStack {
-                    MachineListView()
-                        .navigationTitle("Virtual Machines")
-                }
+            NavigationStack {
+                MachineListView()
+                    .navigationTitle("Virtual Machines")
             }
+            .tabItem {
+                Label("Machines", systemImage: "desktopcomputer")
+            }
+            .tag(1)
 
-            Tab("Settings", systemImage: "gearshape.fill", value: 2) {
-                NavigationStack {
-                    SettingsView()
-                        .navigationTitle("Settings")
-                }
+            NavigationStack {
+                SettingsView()
+                    .navigationTitle("Settings")
             }
+            .tabItem {
+                Label("Settings", systemImage: "gearshape.fill")
+            }
+            .tag(2)
         }
         .tint(CloverTheme.accent)
-        .toolbarBackground(.visible, for: .tabBar)
         .sheet(isPresented: $showingCreateVM) {
             CreateVMView()
         }
@@ -77,16 +81,10 @@ struct ContentView: View {
 
                     Spacer()
 
-                    Button {
+                    Button("See All") {
                         selectedTab = 1
-                    } label: {
-                        HStack(spacing: 5) {
-                            Text("See All")
-                            Image(systemName: "arrow.right")
-                        }
-                        .font(.subheadline.weight(.semibold))
                     }
-                    .buttonStyle(.glass)
+                    .font(.subheadline.weight(.semibold))
                     .tint(CloverTheme.accent)
                 }
 
@@ -145,9 +143,11 @@ struct ContentView: View {
                     .font(.system(size: 30, weight: .bold, design: .rounded))
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("Create and organize virtual machine configurations on your iPad.")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.82))
+                Text(
+                    "Create and organize virtual machine configurations on your iPad."
+                )
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.82))
             }
 
             Button {
@@ -224,10 +224,7 @@ struct EmptyMachinesCard: View {
                     .font(.subheadline.bold())
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
-                    .background(
-                        CloverTheme.gradient,
-                        in: Capsule()
-                    )
+                    .background(CloverTheme.gradient, in: Capsule())
                     .foregroundStyle(.white)
             }
             .buttonStyle(.plain)
@@ -260,9 +257,11 @@ struct MachineRow: View {
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                Text("\(machine.operatingSystem.rawValue) · \(machine.architecture.rawValue)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Text(
+                    "\(machine.operatingSystem.rawValue) · \(machine.architecture.rawValue)"
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
                 Text("\(machine.memoryGB) GB RAM · \(machine.diskGB) GB disk")
                     .font(.caption2)
@@ -297,7 +296,9 @@ struct MachineListView: View {
                 ContentUnavailableView {
                     Label("No Machines", systemImage: "desktopcomputer")
                 } description: {
-                    Text("Your virtual machine configurations will appear here.")
+                    Text(
+                        "Your virtual machine configurations will appear here."
+                    )
                 } actions: {
                     Button("Create Machine") {
                         showingCreateVM = true
@@ -319,8 +320,6 @@ struct MachineListView: View {
                     .onDelete(perform: deleteMachines)
                 }
                 .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-                .background(CloverTheme.background)
             }
         }
         .toolbar {
@@ -330,9 +329,7 @@ struct MachineListView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                .buttonStyle(.glass)
                 .tint(CloverTheme.accent)
-                .accessibilityLabel("Create virtual machine")
             }
         }
         .sheet(isPresented: $showingCreateVM) {
@@ -348,7 +345,8 @@ struct MachineListView: View {
         do {
             try modelContext.save()
         } catch {
-            print("Failed to delete virtual machines: \(error)")
+            print("Failed to delete virtual machine: \(error)")
         }
     }
 }
+
